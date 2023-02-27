@@ -10,10 +10,10 @@ const recupererDonneesServeur = async function(){
             <article>
                 <img src="${produit.imageUrl}" alt="${produit.altTxt}">
                 <h3>${produit.name}</h3>
-                <p>${produit.description}<p>
+                <p>${produit.description}</p>
             </article>
         </a>`
     }
    }
 
-recupererDonneesServeur()
+recupererDonneesServeur();
