@@ -1,7 +1,9 @@
 const recupererDonneesServeur = async function(){
     const reponse = await fetch('http://localhost:3000/api/products/');
+    console.log(reponse);
     const produits = await reponse.json();
-    let sectionFichesProduits = ``
+    console.log(produits);
+    let sectionFichesProduits = "";
     for (let i = 0; i < produits.length; i++){
         const produit = produits[i];
         sectionFichesProduits = document.querySelector('.items');
