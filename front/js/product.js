@@ -51,19 +51,20 @@ function recupererDonneesFormulaire() {
     cle = JSON.parse(`{"${id}&${couleur}" : ${quantiteSaisie}}`);
     console.log(cle);
     panier = lirePanier();
-    if ((id+"&"+couleur) in panier) {
-        if ((panier[id+"&"+couleur] + quantiteSaisie) <= 100) {
-            panier[id+"&"+couleur] += quantiteSaisie;
-        }
-    };
+    for (i = 0; i < panier.length; i++)
+        if (JSON.stringify(Object.keys(panier[i])) == `["${id}&${couleur}"]`) {
+            articlePresentDansPanier = true;
+            console.log(articlePresentDansPanier);
+            if ((parseInt(Object.values(panier[i])) + parseInt(quantiteSaisie)) <= 100) {
+                quantitieAddition = parseInt(quantiteSaisie) + parseInt(Object.values(panier[i]));
+                cle = JSON.parse(`{"${id}&${couleur}" : ${quantitieAddition}}`);
+                panier.splice(i, 1, cle);
+            }
+        };
     if (articlePresentDansPanier == false) {
         panier.push(cle);
     };
-    /*else {
-        panier.push(cle);
-    }*/
     enregistrerPanier(panier);
-    console.log(panier[0]);
 };
 
 function enregistrerPanier(panier) {
