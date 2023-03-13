@@ -31,8 +31,6 @@ function recupererListeArticlesDansPanier() {
         listeArticlesDansPanier[i] = Object.keys(panier[i]);
         listeQuantite[i] = Object.values(panier[i]);
     }
-    console.log(listeArticlesDansPanier);
-    console.log(listeQuantite);
     return listeArticlesDansPanier;
 };
 
@@ -46,25 +44,26 @@ function recupererDonneesFormulaire() {
     const id = urlProduitRecherche.substring(1);
     let quantiteSaisie = document.getElementById("quantity").value;
     let couleur = document.getElementById("colors").value;
+    console.log(couleur);
     let cle = "";
     let articlePresentDansPanier = false;
     cle = JSON.parse(`{"${id}&${couleur}" : ${quantiteSaisie}}`);
-    console.log(cle);
     panier = lirePanier();
-    for (i = 0; i < panier.length; i++)
-        if (JSON.stringify(Object.keys(panier[i])) == `["${id}&${couleur}"]`) {
-            articlePresentDansPanier = true;
-            console.log(articlePresentDansPanier);
-            if ((parseInt(Object.values(panier[i])) + parseInt(quantiteSaisie)) <= 100) {
-                quantitieAddition = parseInt(quantiteSaisie) + parseInt(Object.values(panier[i]));
-                cle = JSON.parse(`{"${id}&${couleur}" : ${quantitieAddition}}`);
-                panier.splice(i, 1, cle);
-            }
+    if (couleur && parseInt(quantiteSaisie) > 0) {
+        for (i = 0; i < panier.length; i++)
+            if (JSON.stringify(Object.keys(panier[i])) == `["${id}&${couleur}"]` ) {
+                articlePresentDansPanier = true;
+                if ((parseInt(Object.values(panier[i])) + parseInt(quantiteSaisie)) <= 100) {
+                    quantitieAddition = parseInt(quantiteSaisie) + parseInt(Object.values(panier[i]));
+                    cle = JSON.parse(`{"${id}&${couleur}" : ${quantitieAddition}}`);
+                    panier.splice(i, 1, cle);
+                }
+            };
+        if (articlePresentDansPanier == false) {
+            panier.push(cle);
         };
-    if (articlePresentDansPanier == false) {
-        panier.push(cle);
+        enregistrerPanier(panier);
     };
-    enregistrerPanier(panier);
 };
 
 function enregistrerPanier(panier) {
